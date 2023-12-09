@@ -1,43 +1,44 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
-const { Configuration, OpenAIApi } = require("openai");
+const express = require('express')
+const app = express()
+const port = 3000
+const axios = require('axios')
+const cors = require('cors')
+app.use(cors())
+app.use(express.json())
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+app.get('/:prompt', async (req, res) => {
+    const prompt = req.params.prompt
+    const image = await getImage(prompt)
+    res.send(image)
+})
 
-const PORT = 4000;
+const getImage = async (prompt) => {
+    const axios = require('axios');
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+    const options = {
+        method: 'POST',
+        url: 'https://ai-image-generator3.p.rapidapi.com/generate',
+        headers: {
+            'content-type': 'application/json',
+            'X-RapidAPI-Key': '02c547945amsh56bca4545ab44f2p15a57cjsna1a38178ef5c',
+            'X-RapidAPI-Host': 'ai-image-generator3.p.rapidapi.com'
+        },
+        data: {
+            prompt: prompt,
+            page: 1
+        }
+    };
 
-const generateImage = async (promptObj) => {
-  try {
-    const response = await openai.createImage({
-      prompt: promptObj.text,
-      n: 1,
-      size: "512x512",
-      response_format: "b64_json",
-    });
+    try {
+        const response = await axios.request(options);
+        return response.data.results.images[0];
+    } catch (error) {
+        console.error(error);
+    }
+}
 
-    const image = response.data.data[0].b64_json;
-    console.log(image);
-    return image;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
 
-app.post("/generateImage", async (req, res) => {
-  const promptObj = req.body.prompt;
-  const image = await generateImage(promptObj);
-  res.send({ image });
-});
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+})

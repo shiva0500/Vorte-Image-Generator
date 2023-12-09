@@ -5,15 +5,14 @@ const ImageGenerator = () => {
   const [prompt, setPrompt] = useState('');
   const [image, setImage] = useState('');
 
-  const generateImage = async () => {
-    try {
-      const response = await axios.post('http://localhost:4000/generateImage', {
-        prompt: { text: prompt }, // Send prompt in the desired format
-      });
 
-      setImage(response.data.image);
+
+  const handleGenerateImage = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/${prompt}`);
+      setImage(response.data);
     } catch (error) {
-      console.error('Error generating image:', error);
+      console.error(error);
     }
   };
 
@@ -32,14 +31,14 @@ const ImageGenerator = () => {
           onChange={(e) => setPrompt(e.target.value)}
         />
         <button
-          className="mt-3 px-4 py-2 btn btn-active rounded-md"
-          onClick={generateImage}
+          className="mt-3 ml-3 px-4 py-2 btn btn-active rounded-md"
+          onClick={handleGenerateImage}
         >
           Generate Image
         </button>
         {image && (
           <div className="mt-4">
-            <img src={`data:image/png;base64,${image}`} alt="Generated Image" className="max-w-full" />
+            <img src={image} alt="Generated Image"  style={{ width: '500px', height: '500px' }} />
           </div>
         )}
       </div>
