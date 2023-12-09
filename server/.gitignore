@@ -1,0 +1,57 @@
+# Node.js
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Debug
+debug.log
+
+# Runtime data
+pids
+*.pem
+*.pid
+*.lock
+*.socket
+
+# Yarn
+yarn-error.log
+
+# dotenv environment variables file
+.env
+
+# Visual Studio Code settings
+.vscode/
+
+# Windows specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+.lnk
+
+# JetBrains
+.idea/
+
+# Sublime Text
+.svn
+.sass-cache
+.compass-cache
+
+# Compiled binary addons
+/build/Release
